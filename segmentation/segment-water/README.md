@@ -1,3 +1,4 @@
+# SEGMENTATION OF WATER BODIES FROM SATELLITE IMAGES
 ## Introduction
 Satellite imagery is a rich source of information, and the accurate segmentation of water bodies is crucial for understanding environmental patterns and changes over time. This project aims to provide a reliable and efficient tool for extracting water regions from raw satellite images.
 
@@ -78,3 +79,13 @@ inference_multiple.predict_ds(test_ds)
 | Unet | Resnet(256,256) | Resnet(512,512) | 
 :--------:|:--------:|:--------:
 |<img width="250" alt="Unet" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/prediciton_unet.png">|<img width="250" alt="Resnet1" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/prediciton_resnet34.png">|<img width="250" alt="Resnet2" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/prediciton_resnet34(2).png">| 
+
+## Single Test Instance
+Using all models to predict a test instance gotten from google
+
+| Test Image | Prediction |
+|<img width="250" alt="test_instance" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/test2.jpg">| <img width="250" alt="Prediction" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/prediciton_test.png">|
+
+Label overlaying the best prediction (Resnet(512,512))
+ <img width="250" alt="Unet" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/test2.png">
+
