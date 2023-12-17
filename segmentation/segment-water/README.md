@@ -10,4 +10,5 @@ The dataset for this project is gotten here [kaggle.com](https://www.kaggle.com/
 To get started with the project you can clone this repo. 
 
 ```git clone https://github.com/busayojee/Satellite-imagery.git```
+
 ```cd segmentation/segment-water```
