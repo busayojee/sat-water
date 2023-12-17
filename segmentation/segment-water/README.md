@@ -42,7 +42,7 @@ resnet2.build_model(2)
 history3 = resnet2.train()
 ```
 
-### Results
+#### Results
 
 | Unet | Resnet(256,256) | Resnet(512,512)
 :--------:|:--------:|:--------:
