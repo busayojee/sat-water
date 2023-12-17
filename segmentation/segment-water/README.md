@@ -46,4 +46,4 @@ history3 = resnet2.train()
 
 | Unet | Resnet(256,256) | Resnet(512,512)
 :--------:|:--------:|:--------:
-|<img width="178" alt="Unet" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/history_unet.png">|<img width="178" alt="Resnet1" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/history_resnet34.png">|<img width="178" alt="Resnet2" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/historyresnet34(2).png">|
+|<img width="100" alt="Unet" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/history_unet.png">|<img width="100" alt="Resnet1" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/history_resnet34.png">|<img width="100" alt="Resnet2" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/historyresnet34(2).png">|
