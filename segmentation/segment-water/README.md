@@ -84,6 +84,7 @@ inference_multiple.predict_ds(test_ds)
 Using all models to predict a test instance gotten from google
 
 | Test Image | Prediction |
+:--------:|:--------:
 |<img width="250" alt="test_instance" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/test2.jpg">| <img width="250" alt="Prediction" src="https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/results/prediciton_test.png">|
 
 Label overlaying the best prediction (Resnet(512,512))
