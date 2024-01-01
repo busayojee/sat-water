@@ -3,7 +3,10 @@
 Created on Thu Nov 17 10:33:34 2023
 
 @author: Busayo Alabi
+
+A guide on how to use the model.
 """
+
 
 from preprocess import Preprocess
 from models import Unet, BackboneModels
