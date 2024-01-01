@@ -8,9 +8,7 @@ The dataset for this project is gotten here [kaggle.com](https://www.kaggle.com/
 ## Installation
 To get started with the project you can clone this repo. 
 
-```git clone https://github.com/busayojee/Satellite-imagery.git```
-
-```cd segmentation/segment-water```
+```git clone https://github.com/busayojee/sat-water.git```
 
 ## Preprocessing
 After downloading the images from kaggle, To preprocess the images you import the preprocess class from preprocess.py and run this code 
