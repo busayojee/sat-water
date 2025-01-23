@@ -15,7 +15,7 @@ After downloading the images from kaggle, To preprocess the images you import th
 
 ```train_ds, val_ds, test_ds = Preprocess.data_load(dataset, "/Masks", "/Images", split, shape, 16, channels=3)```
 
-See [main.py](https://github.com/busayojee/Satellite-imagery/blob/main/segmentation/segment-water/main.py) to help.
+See [main.py](https://github.com/busayojee/sat-water/blob/main/segmentation/segment-water/main.py) to help.
 
 
 ## Model
