@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Thu Nov 17 10:33:34 2023
 
@@ -7,9 +6,6 @@ Created on Thu Nov 17 10:33:34 2023
 A guide on how to use the model.
 """
 
-
-from preprocess import Preprocess
-from models import Unet, BackboneModels
 from inference import Inference
 
 # dataset = "segmentation/segment-water/Water Bodies Dataset"
@@ -22,7 +18,7 @@ from inference import Inference
 # # # Using Unet
 # history1 = Unet.train(train_ds, val_ds,shape=shape,loss=Unet.loss,metrics = Unet.metrics,name="unet")
 # Unet.plot_history(history1,22,model="Unet")
-     
+
 # # using Resnet34
 # resnet1 = BackboneModels("resnet34", train_ds, val_ds, test_ds, name="resnet34")
 # resnet1.build_model(2)
@@ -49,11 +45,14 @@ from inference import Inference
 # inference_r2 = Inference(model="segmentation/segment-water/sat_water_resnet34(2).h5",name="resnet34(2)")
 # inference_r2.predict_ds(test_ds1)
 
-#Testing multiple models
-models={"unet":"segmentation/segment-water/sat_water2.h5", "resnet34":"segmentation/segment-water/sat_water_resnet34.h5", "resnet34(2)":"segmentation/segment-water/sat_water_resnet34(2).h5"}
+# Testing multiple models
+models = {
+    "unet": "segmentation/segment-water/sat_water2.h5",
+    "resnet34": "segmentation/segment-water/sat_water_resnet34.h5",
+    "resnet34(2)": "segmentation/segment-water/sat_water_resnet34(2).h5",
+}
 inference_multiple = Inference(model=models)
 # inference_multiple.predict_ds(test_ds)
 
 # Testing an image instance from google or sentinel hub
 inference_multiple.predict_inst("segmentation/segment-water/test2.jpg", fname="test2")
-                                 
