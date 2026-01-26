@@ -33,7 +33,9 @@ class Inference:
         else:
             raise TypeError("model can either be str or dict")
 
-    def predict(self, image, mask="", image2=None, fname=None):
+    def predict(self, image, mask=None, image2=None, fname=None):
+        if mask is None:
+            mask = tf.zeros((image.shape[0], image.shape[1], 1), dtype=tf.int32)
         mask = {"Mask": mask}
         if isinstance(self.model, dict):
             images = (image - tf.reduce_min(image)) / (
