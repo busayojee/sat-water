@@ -45,7 +45,7 @@ history3 = resnet2.train()
 
 | Unet | Resnet(256,256) | Resnet(512,512)
 :--------:|:--------:|:--------:
-|<img width="250" alt="Unet" src="https://github.com/busayojee/sat-water/blob/main/results/assets/history_unet.png">|<img width="250" alt="Resnet1" src="https://github.com/busayojee/sat-water/blob/main/assets/results/history_resnet34.png">|<img width="250" alt="Resnet2" src="https://github.com/busayojee/sat-water/blob/main/assets/results/historyresnet34(2).png">|
+|<img width="250" alt="Unet" src="https://github.com/busayojee/sat-water/blob/main/assets/results/history_unet.png">|<img width="250" alt="Resnet1" src="https://github.com/busayojee/sat-water/blob/main/assets/results/history_resnet34.png">|<img width="250" alt="Resnet2" src="https://github.com/busayojee/sat-water/blob/main/assets/results/historyresnet34(2).png">|
 
 ## Inference
 To run inference for UNET
