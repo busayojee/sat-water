@@ -83,7 +83,7 @@ Using all models to predict a test instance gotten from google
 
 | Test Image | Prediction |
 :--------:|:--------:
-|<img width="250" alt="test_instance" src="https://github.com/busayojee/sat-water/blob/main/assets/test2.jpg">| <img width="250" alt="Prediction" src="https://github.com/busayojee/sat-water/blob/main/assets/results/prediciton_test.png">|
+|<img width="250" alt="test_instance" src="https://github.com/busayojee/sat-water/blob/main/assets/results/test2.jpg">| <img width="250" alt="Prediction" src="https://github.com/busayojee/sat-water/blob/main/assets/results/prediciton_test.png">|
 
 Label overlaying the best prediction (Resnet(512,512))
 
