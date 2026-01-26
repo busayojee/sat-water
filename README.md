@@ -45,7 +45,7 @@ history3 = resnet2.train()
 
 | Unet | Resnet(256,256) | Resnet(512,512)
 :--------:|:--------:|:--------:
-|<img width="250" alt="Unet" src="https://github.com/busayojee/sat-water/blob/main/results/history_unet.png">|<img width="250" alt="Resnet1" src="https://github.com/busayojee/sat-water/blob/main/results/history_resnet34.png">|<img width="250" alt="Resnet2" src="https://github.com/busayojee/sat-water/blob/main/results/historyresnet34(2).png">|
+|<img width="250" alt="Unet" src="https://github.com/busayojee/sat-water/blob/main/results/assets/history_unet.png">|<img width="250" alt="Resnet1" src="https://github.com/busayojee/sat-water/blob/main/assets/results/history_resnet34.png">|<img width="250" alt="Resnet2" src="https://github.com/busayojee/sat-water/blob/main/assets/results/historyresnet34(2).png">|
 
 ## Inference
 To run inference for UNET
@@ -76,16 +76,16 @@ inference_multiple.predict_ds(test_ds)
 #### Results
 | Unet | Resnet(256,256) | Resnet(512,512) | 
 :--------:|:--------:|:--------:
-|<img width="250" alt="Unet" src="https://github.com/busayojee/sat-water/blob/main/results/prediciton_unet.png">|<img width="250" alt="Resnet1" src="https://github.com/busayojee/sat-water/blob/main/results/prediciton_resnet34.png">|<img width="250" alt="Resnet2" src="https://github.com/busayojee/sat-water/blob/main/results/prediciton_resnet34(2).png">| 
+|<img width="250" alt="Unet" src="https://github.com/busayojee/sat-water/blob/main/assets/results/prediciton_unet.png">|<img width="250" alt="Resnet1" src="https://github.com/busayojee/sat-water/blob/main/assets/results/prediciton_resnet34.png">|<img width="250" alt="Resnet2" src="https://github.com/busayojee/sat-water/blob/main/assets/results/prediciton_resnet34(2).png">| 
 
 ## Single Test Instance
 Using all models to predict a test instance gotten from google
 
 | Test Image | Prediction |
 :--------:|:--------:
-|<img width="250" alt="test_instance" src="https://github.com/busayojee/sat-water/blob/main/test2.jpg">| <img width="250" alt="Prediction" src="https://github.com/busayojee/sat-water/blob/main/results/prediciton_test.png">|
+|<img width="250" alt="test_instance" src="https://github.com/busayojee/sat-water/blob/main/assets/test2.jpg">| <img width="250" alt="Prediction" src="https://github.com/busayojee/sat-water/blob/main/assets/results/prediciton_test.png">|
 
 Label overlaying the best prediction (Resnet(512,512))
 
- <img width="250" alt="Unet" src="https://github.com/busayojee/sat-water/blob/main/results/test2.png">
+ <img width="250" alt="Unet" src="https://github.com/busayojee/sat-water/blob/main/assets/results/test2.png">
 
