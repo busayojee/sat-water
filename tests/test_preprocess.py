@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from preprocess import Preprocess
+from satwater.preprocess import Preprocess
 
 
 def _write_dummy_pair(root: Path, idx: int, size=(64, 64)) -> None:

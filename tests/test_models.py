@@ -1,7 +1,7 @@
 import tensorflow as tf
 
-from models import BackboneModels, Unet, sm
-from preprocess import Preprocess
+from satwater.models import BackboneModels, Unet, sm
+from satwater.preprocess import Preprocess
 
 
 def test_custom_unet_builds_and_forward_pass_runs():

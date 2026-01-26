@@ -4,8 +4,8 @@ import numpy as np
 import tensorflow as tf
 from PIL import Image
 
-from inference import Inference
-from preprocess import Preprocess
+from satwater.inference import Inference
+from satwater.preprocess import Preprocess
 
 
 def _write_dummy_jpeg(path: Path, size=(600, 600)) -> None:
