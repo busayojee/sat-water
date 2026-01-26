@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    env:
+      TF_CPP_MIN_LOG_LEVEL: "2"
+      MPLBACKEND: "Agg"
+      SM_FRAMEWORK: "tf.keras"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dependencies (CI-friendly)
+        run: |
+          pip install -r requirements-dev.txt
+          pip install \
+            "tensorflow==2.15.1" \
+            "segmentation-models==1.0.1" \
+            "keras-applications<=1.0.8" \
+            "image-classifiers==1.0.*" \
+            "efficientnet==1.0.*" \
+            "numpy==1.26.4" \
+            "matplotlib" \
+            "scikit-image" \
+            "pillow"
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Format check (black)
+        run: black --check .
+
+      - name: Run tests (pytest)
+        env:
+          PYTHONPATH: src
+        run: pytest -q
