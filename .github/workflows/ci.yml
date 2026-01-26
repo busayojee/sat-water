@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies (CI-friendly)
         run: |
-          pip install -r requirements-dev.txt
+          pip install -r requirements.txt
           pip install \
             "tensorflow==2.15.1" \
             "segmentation-models==1.0.1" \
