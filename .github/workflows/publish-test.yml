@@ -1,0 +1,67 @@
+name: Publish to TestPyPI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+
+      - name: Build dist
+        run: |
+          python -m build
+    
+      - name: Clean previous builds
+        run: |
+          rm -rf dist build *.egg-info
+          
+      - name: Twine check
+        run: |
+          twine check dist/*.whl dist/*.tar.gz
+    
+      
+
+      - name: Inspect dist contents
+        run: |
+          ls -lah dist
+          python - <<'PY'
+          import glob, zipfile, tarfile
+          wheels = glob.glob("dist/*.whl")
+          sdists = glob.glob("dist/*.tar.gz")
+          for w in wheels:
+            print("\n--- WHEEL:", w)
+            with zipfile.ZipFile(w) as z:
+              for n in sorted(z.namelist()):
+                if n.startswith("satwater/") or n.endswith("METADATA"):
+                  print(n)
+          for s in sdists:
+            print("\n--- SDIST:", s)
+            with tarfile.open(s, "r:gz") as t:
+              names = sorted(t.getnames())
+              for n in names:
+                if "/satwater/" in n or n.endswith("pyproject.toml") or n.endswith("README.md") or n.endswith("LICENSE"):
+                  print(n)
+          PY
+
+      - name: Publish to TestPyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TESTPYPI_API_TOKEN }}
+        run: |
+          twine upload --repository-url https://test.pypi.org/legacy/ dist/*

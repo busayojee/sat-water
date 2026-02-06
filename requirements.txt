@@ -36,15 +36,19 @@ kiwisolver==1.4.9
 lazy_loader==0.4
 libclang==18.1.1
 Markdown==3.10.1
+markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 matplotlib==3.10.8
+mdurl==0.1.2
 ml-dtypes==0.3.2
 mypy_extensions==1.1.0
+namex==0.1.0
 networkx==3.6.1
 nodeenv==1.10.0
 numpy==1.26.4
 oauthlib==3.3.1
 opt_einsum==3.4.0
+optree==0.18.0
 packaging==26.0
 pathspec==1.0.3
 pillow==12.1.0
@@ -62,6 +66,7 @@ pytokens==0.4.0
 PyYAML==6.0.3
 requests==2.32.5
 requests-oauthlib==2.0.0
+rich==14.3.2
 rsa==4.9.1
 ruff==0.14.14
 scikit-image==0.26.0
@@ -74,9 +79,10 @@ tensorboard-data-server==0.7.2
 tensorflow==2.15.1
 tensorflow-estimator==2.15.0
 tensorflow-io-gcs-filesystem==0.37.1
-# tensorflow-macos==2.15.1
-# tensorflow-metal==1.2.0
+tensorflow-macos==2.15.1
+tensorflow-metal==1.2.0
 termcolor==3.3.0
+tf_keras==2.15.1
 tifffile==2026.1.14
 tqdm==4.67.1
 typer-slim==0.21.1

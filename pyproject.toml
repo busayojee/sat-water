@@ -8,7 +8,63 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
-ignore = ["E501"]  
+ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "models.py" = ["E402"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sat-water"
+version = "0.1.0"
+description = "Satellite water body segmentation with pretrained weights hosted on Hugging Face."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Busayo Alabi" }]
+keywords = ["segmentation", "satellite", "computer-vision", "water"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "huggingface_hub>=0.20",
+  "numpy>=1.23",
+  "pillow>=9",
+  "matplotlib>=3.5",
+]
+
+[project.optional-dependencies]
+tf = [
+  # TF wheels on Linux/Windows
+  "tensorflow>=2.15; platform_system!='Darwin'",
+  # Apple Silicon
+  "tensorflow-macos>=2.15; platform_system=='Darwin' and platform_machine=='arm64'",
+  "tensorflow-metal>=1.0; platform_system=='Darwin' and platform_machine=='arm64'",
+
+  # Compatibility layer for segmentation-models with Keras 3 setups
+  "tf-keras>=2.16",
+
+  # segmentation-models stack
+  "segmentation-models==1.0.1",
+  "efficientnet==1.0.0",
+  "image-classifiers==1.0.0",
+  "Keras-Applications<=1.0.8",
+]
+
+[project.urls]
+Homepage = "https://github.com/busayojee/sat-water"
+Repository = "https://github.com/busayojee/sat-water"
+
+[tool.hatch.build.targets.wheel]
+packages = ["satwater"]
+
+[tool.pytest.ini_options]
+markers = [
+  "tf: tests that require TensorFlow"
+]
