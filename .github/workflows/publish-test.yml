@@ -30,10 +30,10 @@ jobs:
       - name: Clean previous builds
         run: |
           rm -rf dist build *.egg-info
-          
+
       - name: Twine check
         run: |
-          twine check dist/*.whl dist/*.tar.gz
+          twine check dist/*
     
       
 
