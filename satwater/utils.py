@@ -6,25 +6,17 @@ from pathlib import Path
 
 import numpy as np
 
-try:
-    import tensorflow as tf
-except Exception as e:
-    raise ImportError(
-        "TensorFlow is required for sat-water inference/training.\n\n"
-        "Install TensorFlow first, then reinstall sat-water.\n"
-        "Recommended:\n"
-        "  Linux/Windows: pip install 'tensorflow'\n"
-        "  Apple Silicon: pip install 'tensorflow-macos' 'tensorflow-metal'\n\n"
-        "If you are using segmentation-models with TF legacy Keras:\n"
-        "  pip install tf-keras segmentation-models\n"
-    ) from e
-
 
 def set_seed(seed=42):
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
-    tf.random.set_seed(seed)
+    try:
+        import tensorflow as tf
+
+        tf.random.set_seed(seed)
+    except Exception:
+        pass
 
 
 def ensure_dir(path):
