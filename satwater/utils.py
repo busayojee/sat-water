@@ -5,11 +5,22 @@ import random
 from pathlib import Path
 
 import numpy as np
-import tensorflow as tf
+
+try:
+    import tensorflow as tf
+except Exception as e:
+    raise ImportError(
+        "TensorFlow is required for sat-water inference/training.\n\n"
+        "Install TensorFlow first, then reinstall sat-water.\n"
+        "Recommended:\n"
+        "  Linux/Windows: pip install 'tensorflow'\n"
+        "  Apple Silicon: pip install 'tensorflow-macos' 'tensorflow-metal'\n\n"
+        "If you are using segmentation-models with TF legacy Keras:\n"
+        "  pip install tf-keras segmentation-models\n"
+    ) from e
 
 
 def set_seed(seed=42):
-    """Make runs more reproducible."""
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
@@ -17,16 +28,12 @@ def set_seed(seed=42):
 
 
 def ensure_dir(path):
-    """Create a directory if it doesn't exist and return it as Path."""
     p = Path(path)
     p.mkdir(parents=True, exist_ok=True)
     return p
 
 
 def parse_shape(shape):
-    """
-    Parse shape string like '128,128,3' into (128, 128, 3).
-    """
     parts = [int(x.strip()) for x in shape.split(",")]
     if len(parts) != 3:
         raise ValueError("shape must be 'H,W,C' e.g. '128,128,3'")
@@ -34,10 +41,7 @@ def parse_shape(shape):
 
 
 def parse_models_arg(models_arg):
-    """
-    Parse "unet=path,resnet34=path,resnet34(2)=path"  dict.
-    """
-    out: dict[str, str] = {}
+    out = {}
     for item in models_arg.split(","):
         item = item.strip()
         if not item:
