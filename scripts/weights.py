@@ -1,3 +1,9 @@
+"""
+Created on Fri Jan 15 14:16:32 2026
+
+@author: Busayo Alabi
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -7,8 +13,24 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-import tensorflow as tf
+try:
+    import tensorflow as tf
+except Exception as e:
+    raise ImportError(
+        "TensorFlow is required for sat-water inference/training.\n\n"
+        "Install TensorFlow first, then reinstall sat-water.\n"
+        "Recommended:\n"
+        "  Linux/Windows: pip install 'tensorflow'\n"
+        "  Apple Silicon: pip install 'tensorflow-macos' 'tensorflow-metal'\n\n"
+        "If you are using segmentation-models with TF legacy Keras:\n"
+        "  pip install tf-keras segmentation-models\n"
+    ) from e
+
 from huggingface_hub import HfApi
+
+print("TF imported from:", getattr(tf, "__file__", None))
+print("TF version:", getattr(tf, "__version__", None))
+print("Has tf.keras?", hasattr(tf, "keras"))
 
 
 @dataclass(frozen=True)
@@ -18,7 +40,7 @@ class ModelSpec:
     input_shape: str | None = None
 
 
-def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
+def sha256_file(path, chunk_size=1024 * 1024):
     h = hashlib.sha256()
     with path.open("rb") as f:
         for chunk in iter(lambda: f.read(chunk_size), b""):
@@ -26,13 +48,10 @@ def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
     return h.hexdigest()
 
 
-def resolve_model_path(p: str) -> Path:
+def resolve_model_path(p):
     path = Path(p).expanduser()
-
     if path.exists():
         return path.resolve()
-
-    # Try common extensions if user omitted them
     for ext in (".keras", ".h5"):
         candidate = Path(str(path) + ext).expanduser()
         if candidate.exists():
@@ -41,18 +60,17 @@ def resolve_model_path(p: str) -> Path:
     raise FileNotFoundError(f"Model file not found: {p} (also tried .keras/.h5)")
 
 
-def export_weights(model_path: Path, out_dir: Path) -> Path:
+def export_weights(model_path, out_dir):
     out_dir.mkdir(parents=True, exist_ok=True)
 
     model = tf.keras.models.load_model(str(model_path), compile=False)
 
-    # Keras standard weights format
     weights_path = out_dir / f"{model_path.stem}.weights.h5"
     model.save_weights(str(weights_path))
     return weights_path
 
 
-def write_sha_file(out_dir: Path, weights_files: list[Path]) -> Path:
+def write_sha_file(out_dir, weights_files: list[Path]):
     sha_path = out_dir / "SHA256SUMS.txt"
     lines = []
     for wf in weights_files:
@@ -61,7 +79,7 @@ def write_sha_file(out_dir: Path, weights_files: list[Path]) -> Path:
     return sha_path
 
 
-def write_manifest(out_dir: Path, repo_id: str, hf_root: str, entries: dict) -> Path:
+def write_manifest(out_dir, repo_id, hf_root, entries: dict):
     manifest = {
         "repo_id": repo_id,
         "hf_root": hf_root.strip("/"),
@@ -72,9 +90,7 @@ def write_manifest(out_dir: Path, repo_id: str, hf_root: str, entries: dict) -> 
     return manifest_path
 
 
-def upload_to_hf(
-    repo_id: str, local_dir: Path, path_in_repo: str, token: str, private: bool
-) -> None:
+def upload_to_hf(repo_id, local_dir, path_in_repo, token, private: bool):
     api = HfApi(token=token)
     api.create_repo(repo_id=repo_id, repo_type="model", private=private, exist_ok=True)
     api.upload_folder(
@@ -86,22 +102,21 @@ def upload_to_hf(
     )
 
 
-def parse_model_args(model_args: list[str]) -> list[ModelSpec]:
+def parse_model_args(model_args: list[str]):
     """
     Accept repeated args like:
       --model unet=~/.../model1
       --model resnet34_256=~/.../model2
       --model resnet34_512=~/.../model3
-    Optional shape metadata:
+    shape metadata (optional):
       --model unet=~/.../model1@128,128,3
     """
-    specs: list[ModelSpec] = []
+    specs = []
     for item in model_args:
         if "=" not in item:
             raise ValueError("--model must be KEY=PATH (optionally KEY=PATH@H,W,C)")
         key, rest = item.split("=", 1)
         key = key.strip()
-
         shape = None
         if "@" in rest:
             path_str, shape = rest.split("@", 1)
@@ -109,16 +124,15 @@ def parse_model_args(model_args: list[str]) -> list[ModelSpec]:
             shape = shape.strip()
         else:
             path_str = rest.strip()
-
         specs.append(
             ModelSpec(key=key, path=resolve_model_path(path_str), input_shape=shape)
         )
     return specs
 
 
-def main() -> None:
+def main():
     p = argparse.ArgumentParser(
-        description="Export Keras weights + upload to Hugging Face (multi-model)."
+        description="Export Keras weights and upload to Hugging Face (multi-model)."
     )
     p.add_argument("--repo-id", required=True, help="e.g. busayojee/sat-water-weights")
     p.add_argument(
@@ -143,23 +157,18 @@ def main() -> None:
     token = os.environ.get("HF_TOKEN")
     if not token:
         raise RuntimeError("HF_TOKEN is not set. Export HF_TOKEN before running.")
-
     specs = parse_model_args(args.model)
-
     out_dir = Path(args.out_dir).expanduser().resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # Export each model into its own subfolder under out_dir/<key>/
-    manifest_entries: dict[str, dict] = {}
-    weights_files: list[Path] = []
-
+    manifest_entries = {}
+    weights_files = []
     for spec in specs:
         model_out = out_dir / spec.key
         model_out.mkdir(parents=True, exist_ok=True)
-
         weights_path = export_weights(spec.path, model_out)
         weights_files.append(weights_path)
-
         sha = sha256_file(weights_path)
         manifest_entries[spec.key] = {
             "source_model": str(spec.path),
@@ -173,7 +182,6 @@ def main() -> None:
     manifest_path = write_manifest(
         out_dir, args.repo_id, args.hf_root, manifest_entries
     )
-
     # Upload everything under hf_root/
     upload_to_hf(
         repo_id=args.repo_id,
@@ -182,7 +190,6 @@ def main() -> None:
         token=token,
         private=args.private,
     )
-
     print("Done")
     print(f"Local artifacts: {out_dir}")
     print(
