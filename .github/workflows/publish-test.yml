@@ -6,7 +6,6 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
 
@@ -23,19 +22,18 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install build twine
 
-      - name: Build dist
-        run: |
-          python -m build
-    
       - name: Clean previous builds
         run: |
           rm -rf dist build *.egg-info
 
+      - name: Build dist
+        run: |
+          python -m build
+          ls -lah dist
+
       - name: Twine check
         run: |
           twine check dist/*
-    
-      
 
       - name: Inspect dist contents
         run: |
