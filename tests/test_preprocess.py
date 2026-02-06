@@ -1,9 +1,12 @@
 from pathlib import Path
 
 import numpy as np
+import pytest
 from PIL import Image
 
 from satwater.preprocess import Preprocess
+
+pytestmark = pytest.mark.tf
 
 
 def _write_dummy_pair(root: Path, idx: int, size=(64, 64)) -> None:

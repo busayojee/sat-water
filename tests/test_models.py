@@ -1,7 +1,21 @@
-import tensorflow as tf
+import pytest
 
+try:
+    import tensorflow as tf
+except Exception as e:
+    raise ImportError(
+        "TensorFlow is required for sat-water inference/training.\n\n"
+        "Install TensorFlow first, then reinstall sat-water.\n"
+        "Recommended:\n"
+        "  Linux/Windows: pip install 'tensorflow'\n"
+        "  Apple Silicon: pip install 'tensorflow-macos' 'tensorflow-metal'\n\n"
+        "If you are using segmentation-models with TF legacy Keras:\n"
+        "  pip install tf-keras segmentation-models\n"
+    ) from e
 from satwater.models import BackboneModels, Unet, sm
 from satwater.preprocess import Preprocess
+
+pytestmark = pytest.mark.tf
 
 
 def test_custom_unet_builds_and_forward_pass_runs():
