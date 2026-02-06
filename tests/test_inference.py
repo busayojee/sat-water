@@ -2,10 +2,11 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-import tensorflow as tf
 from PIL import Image
 
-from satwater.inference import Inference
+tf = pytest.importorskip("tensorflow")
+
+from satwater.inference import Inference  # noqa: E402
 
 pytestmark = pytest.mark.tf
 # TODO: IMPROVE TEST SCRIPTS TO INCLUDE NEW FUNCTIONS

@@ -1,8 +1,11 @@
 import pytest
-import tensorflow as tf
 
-from satwater.models import BackboneModels, Unet, sm
-from satwater.preprocess import Preprocess
+tf = pytest.importorskip("tensorflow")
+
+sm = pytest.importorskip("segmentation_models")
+
+from satwater.models import BackboneModels, Unet  # noqa: E402
+from satwater.preprocess import Preprocess  # noqa: E402
 
 pytestmark = pytest.mark.tf
 

@@ -4,7 +4,9 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from satwater.preprocess import Preprocess
+tf = pytest.importorskip("tensorflow")
+
+from satwater.preprocess import Preprocess  # noqa: E402
 
 pytestmark = pytest.mark.tf
 
