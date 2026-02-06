@@ -9,7 +9,20 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
+
+try:
+    import tensorflow as tf
+except Exception as e:
+    raise ImportError(
+        "TensorFlow is required for sat-water inference/training.\n\n"
+        "Install TensorFlow first, then reinstall sat-water.\n"
+        "Recommended:\n"
+        "  Linux/Windows: pip install 'tensorflow'\n"
+        "  Apple Silicon: pip install 'tensorflow-macos' 'tensorflow-metal'\n\n"
+        "If you are using segmentation-models with TF legacy Keras:\n"
+        "  pip install tf-keras segmentation-models\n"
+    ) from e
+
 from skimage import color
 
 
@@ -18,14 +31,11 @@ class Preprocess:
 
     @staticmethod
     def load(mask_path, mask_folder, image_folder, channels):
-        # mask_folder = mask_folder.replace("/", "")
-        # image_folder = image_folder.replace("/", "")
         mask = tf.io.read_file(mask_path)
         mask = tf.dtypes.cast(tf.image.decode_jpeg(mask, channels=1), tf.float32)
         img_path = tf.strings.regex_replace(mask_path, mask_folder, image_folder)
         image = tf.io.read_file(img_path)
         image = tf.image.decode_jpeg(image, channels=channels)
-
         return {"image": Preprocess.normalization_layer(image), "mask": mask}
 
     @staticmethod
@@ -79,9 +89,9 @@ class Preprocess:
         train_ds = train_ds.map(
             lambda x: Preprocess.resize(x, shape), num_parallel_calls=AUTOTUNE
         )
-        # train_ds = train_ds.map(make_single_class)
         train_ds = train_ds.batch(batch_size)
         train_ds = train_ds.prefetch(buffer_size=AUTOTUNE)
+
         val_ds = val_ds.map(
             lambda x: Preprocess.load(x, mask_folder, image_folder, channels)
         )
@@ -89,9 +99,9 @@ class Preprocess:
         val_ds = val_ds.map(
             lambda x: Preprocess.resize(x, shape), num_parallel_calls=AUTOTUNE
         )
-
         val_ds = val_ds.batch(batch_size)
         val_ds = val_ds.prefetch(buffer_size=AUTOTUNE)
+
         test_ds = test_ds.map(
             lambda x: Preprocess.load(x, mask_folder, image_folder, channels)
         )
@@ -99,7 +109,6 @@ class Preprocess:
         test_ds = test_ds.map(
             lambda x: Preprocess.resize(x, shape), num_parallel_calls=AUTOTUNE
         )
-
         test_ds = test_ds.batch(batch_size)
         test_ds = test_ds.prefetch(buffer_size=AUTOTUNE)
 
@@ -139,7 +148,6 @@ class Preprocess:
         for image, mask in (
             train_ds.unbatch().shuffle(buffer_size=len(train_ds)).take(1)
         ):
-            # In the case of inceptionv3 and mobilenetv2
             image = (image - tf.reduce_min(image)) / (
                 tf.reduce_max(image) - tf.reduce_min(image)
             )
