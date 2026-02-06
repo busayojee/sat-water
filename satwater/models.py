@@ -4,20 +4,51 @@ Created on Wed Nov 17 11:05:25 2023
 @author: Busayo Alabi
 """
 
-import os
-
-os.environ["SM_FRAMEWORK"] = "tf.keras"
 import matplotlib.pyplot as plt
-import segmentation_models as sm
-import tensorflow as tf
+
+try:
+    import tensorflow as tf
+except Exception as e:
+    raise ImportError(
+        "TensorFlow is required for sat-water inference/training.\n\n"
+        "Install TensorFlow first, then reinstall sat-water.\n"
+        "Recommended:\n"
+        "  Linux/Windows: pip install 'tensorflow'\n"
+        "  Apple Silicon: pip install 'tensorflow-macos' 'tensorflow-metal'\n\n"
+        "If you are using segmentation-models with TF legacy Keras:\n"
+        "  pip install tf-keras segmentation-models\n"
+    ) from e
+
+try:
+    import segmentation_models as sm
+except Exception as e:
+    raise ImportError(
+        "segmentation-models is required for training backbone models.\n"
+        "Install it with:\n"
+        "  pip install segmentation-models tf-keras\n"
+    ) from e
 
 from satwater.preprocess import Preprocess
 
 
-# with custom unet
 class Unet:
     loss = sm.losses.categorical_focal_dice_loss
     metrics = [sm.metrics.iou_score, sm.metrics.f1_score]
+
+    @staticmethod
+    def dice_coef_water(y_true, y_pred, smooth=1e-6):
+        y_true = tf.cast(y_true, tf.float32)
+        y_true = tf.squeeze(y_true, axis=-1)
+        y_pred = tf.cast(y_pred[..., 1], tf.float32)
+
+        y_true_f = tf.reshape(y_true, [tf.shape(y_true)[0], -1])
+        y_pred_f = tf.reshape(y_pred, [tf.shape(y_pred)[0], -1])
+
+        intersection = tf.reduce_sum(y_true_f * y_pred_f, axis=1)
+        denom = tf.reduce_sum(y_true_f + y_pred_f, axis=1)
+
+        dice = (2.0 * intersection + smooth) / (denom + smooth)
+        return tf.reduce_mean(dice)
 
     @staticmethod
     def conv_block(input, filters):
